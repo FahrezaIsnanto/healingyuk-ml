@@ -65,7 +65,7 @@ def get_10_nearest_place(event, context):
     data = json.loads(dataStr)
     print(data)
 
-    tenNearestPlace = find_nearest(data['lat'], data['lon'])
+    tenNearestPlace = find_nearest(float(data['lat']), float(data['lon']))
     df2= places.filter(items = tenNearestPlace.index, axis=0)
     json_records = df2.to_json(orient ='records')
 
