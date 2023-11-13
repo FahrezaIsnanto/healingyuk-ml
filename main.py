@@ -69,9 +69,9 @@ def get_10_nearest_place(event, context):
     df2= places.filter(items = tenNearestPlace.index, axis=0)
     json_records = df2.to_json(orient ='records')
 
-    topicName = os.getenv('RESULT_TOPIC')
+    # topicName = os.getenv('RESULT_TOPIC')
     messageData =  { "data" : json_records }
     print(messageData)
 
     #publish(topicName, messageData)
-    pushFcm(event["devicetoken"], json_records)
+    pushFcm(data["devicetoken"], json_records)
