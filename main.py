@@ -2,6 +2,7 @@ import os
 import json
 import base64
 import pandas as pd
+import requests
 from math import radians, cos, sin, asin, sqrt
 from google.cloud import pubsub_v1
 
@@ -18,6 +19,25 @@ def publish(topicName, data):
   print(future.result())
   print(f"Published messages to {topic_path}.")
 
+def pushFcm(deviceToken, tenNearestPlace):
+    api_url = "https://fcm.googleapis.com/fcm/send"
+    pushData = {
+        "data": {
+             "tenNearestPlace": tenNearestPlace, 
+              "notification": {
+                "title": "FCM MESSAGE TEN NEAREST PLACE",
+                "body": "Berhasil mendapatkan 10 rekomendasi tempat terdekat",
+                "icon": "",
+              }
+        },
+        "to": deviceToken
+    }
+    headers =  {
+        "Authorization": "key="+os.getenv('FCM_KEY'),
+        "Content-Type": "application/json"
+    }
+    response = requests.post(api_url, data=json.dumps(pushData), headers=headers)
+    print(response.status_code)
 
 def dist(lat1, long1, lat2, long2):
     """ Replicating the same formula as mentioned in Wiki """
@@ -53,4 +73,5 @@ def get_10_nearest_place(event, context):
     messageData =  { "data" : json_records }
     print(messageData)
 
-    publish(topicName, messageData)
+    #publish(topicName, messageData)
+    pushFcm(event["devicetoken"], json_records)
