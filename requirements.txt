@@ -2,3 +2,5 @@ google-cloud-pubsub
 pandas
 kaggle
 requests
+joblib
+dill
