@@ -4,3 +4,8 @@ kaggle
 requests
 joblib
 dill
+scikit-learn
+scipy
+matplotlib
+tensorflow
+geopy
